@@ -532,9 +532,11 @@ void DesktopMediaPlayerWidget::onFrameTick(float deltaMs, Renderer& /*renderer*/
   if (!m_audioVisualizerEnabled || m_audioVisualizer == nullptr) {
     return;
   }
+  const bool newValues = m_pendingSpectrumUpdate;
   syncSpectrum();
-  m_audioVisualizer->tick(deltaMs);
-  requestRedraw();
+  if (m_audioVisualizer->advance(deltaMs, newValues, !m_spectrum->idle())) {
+    requestRedraw();
+  }
 }
 
 void DesktopMediaPlayerWidget::syncSpectrum() {

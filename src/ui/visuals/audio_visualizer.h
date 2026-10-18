@@ -21,6 +21,10 @@ public:
   void setSmoothingTimeMs(float tauMs) noexcept { m_smoothingTauMs = std::max(0.0F, tauMs); }
 
   void tick(float deltaMs);
+  // Per-frame entry point for widgets. While audio plays it ticks only when new spectrum values
+  // arrived, so redraws follow [audio].spectrum_frame_rate rather than the output's refresh rate;
+  // skipped frames add their time to the next tick. Returns whether it ticked.
+  bool advance(float deltaMs, bool newValues, bool audioActive);
   [[nodiscard]] bool converged() const noexcept { return m_converged; }
 
 private:
@@ -30,6 +34,7 @@ private:
   std::vector<float> m_targetValues;
   std::vector<float> m_displayValues;
   float m_smoothingTauMs = 60.0F;
+  float m_msSinceTick = 0.0F;
   bool m_converged = true;
   ColorSpec m_color1 = colorSpecFromRole(ColorRole::Primary);
   ColorSpec m_color2 = colorSpecFromRole(ColorRole::Primary);

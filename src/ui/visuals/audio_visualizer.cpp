@@ -24,6 +24,16 @@ bool AudioVisualizer::setValues(const std::vector<float>& values) {
   return true;
 }
 
+bool AudioVisualizer::advance(float deltaMs, bool newValues, bool audioActive) {
+  m_msSinceTick += std::max(0.0F, deltaMs);
+  if (audioActive && !newValues) {
+    return false;
+  }
+  tick(m_msSinceTick);
+  m_msSinceTick = 0.0F;
+  return true;
+}
+
 void AudioVisualizer::tick(float deltaMs) {
   if (m_targetValues.empty()) {
     m_converged = true;

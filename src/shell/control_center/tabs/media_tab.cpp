@@ -624,12 +624,14 @@ void MediaTab::onFrameTick(float deltaMs) {
   }
 
   if (m_visualizerSpectrum != nullptr) {
+    const bool newValues = m_pendingSpectrumUpdate;
+    m_pendingSpectrumUpdate = false;
     if (m_spectrum != nullptr && m_spectrumListenerId != 0) {
       if (!m_spectrum->idle() || !m_visualizerSpectrum->converged()) {
         m_visualizerSpectrum->setValues(m_spectrum->values(m_spectrumListenerId));
       }
     }
-    m_visualizerSpectrum->tick(deltaMs);
+    m_visualizerSpectrum->advance(deltaMs, newValues, m_spectrum != nullptr && !m_spectrum->idle());
   }
 }
 
@@ -639,6 +641,7 @@ void MediaTab::setActive(bool active) {
   if (m_spectrum != nullptr) {
     if (active && m_spectrumListenerId == 0) {
       m_spectrumListenerId = m_spectrum->addChangeListener(kVisualizerBandCount, [this]() {
+        m_pendingSpectrumUpdate = true;
         if (!m_active || m_spectrum->idle()) {
           return;
         }

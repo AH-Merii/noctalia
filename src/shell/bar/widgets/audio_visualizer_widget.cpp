@@ -95,17 +95,13 @@ void AudioVisualizerWidget::onFrameTick(float deltaMs) {
   if (!m_visible) {
     return;
   }
-  m_msSinceVisualizerTick += deltaMs;
-  // While audio plays, advance only on new spectrum frames, so the bar redraws at
-  // [audio].spectrum_frame_rate rather than at the output's refresh rate.
-  const bool spectrumActive = m_spectrum != nullptr && !m_spectrum->idle();
-  if (spectrumActive && !m_pendingSpectrumUpdate) {
+  const bool newValues = m_pendingSpectrumUpdate;
+  const bool audioActive = m_spectrum != nullptr && !m_spectrum->idle();
+  syncSpectrum();
+  if (!m_visualizer->advance(deltaMs, newValues, audioActive)) {
     return;
   }
-  syncSpectrum();
-  m_visualizer->tick(m_msSinceVisualizerTick);
-  m_msSinceVisualizerTick = 0.0F;
-  if (!m_visualizer->converged() || spectrumActive) {
+  if (!m_visualizer->converged() || audioActive) {
     requestRedraw();
   }
 }
