@@ -52,6 +52,7 @@ private:
   std::uint64_t m_listenerId = 0;
   AudioVisualizer* m_visualizer = nullptr;
   bool m_pendingSpectrumUpdate = false;
+  float m_msSinceVisualizerTick = 0.0F;
   bool m_visible = true;
   bool m_visibilityInitialized = false;
   bool m_fadingOut = false;
