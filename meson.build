@@ -1183,7 +1183,6 @@ if build_tests
     'audio_glyphs',
     'audio_media_class',
     'audio_route_selection',
-    'audio_visualizer',
     'battery_health',
     'battery_hook_state',
     'bluetooth_uuid_names',
