@@ -151,9 +151,8 @@ void DesktopAudioVisualizerWidget::onFrameTick(float deltaMs, Renderer& renderer
   if (!m_visible) {
     return;
   }
-  const bool newValues = m_pendingSpectrumUpdate;
   syncSpectrum(&renderer);
-  m_visualizer->advance(deltaMs, newValues, m_spectrum != nullptr && !m_spectrum->idle());
+  m_visualizer->advance(deltaMs, m_spectrum != nullptr && !m_spectrum->idle());
 }
 
 void DesktopAudioVisualizerWidget::layout(Renderer& renderer) {

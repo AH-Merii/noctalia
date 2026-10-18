@@ -67,7 +67,6 @@ private:
   Flex* m_visualizerColumn = nullptr;
   Flex* m_visualizerBody = nullptr;
   AudioVisualizer* m_visualizerSpectrum = nullptr;
-  bool m_pendingSpectrumUpdate = false;
   Image* m_artwork = nullptr;
   Flex* m_artworkRow = nullptr;
   Flex* m_nowCard = nullptr;

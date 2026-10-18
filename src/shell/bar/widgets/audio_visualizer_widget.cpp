@@ -95,10 +95,9 @@ void AudioVisualizerWidget::onFrameTick(float deltaMs) {
   if (!m_visible) {
     return;
   }
-  const bool newValues = m_pendingSpectrumUpdate;
   const bool audioActive = m_spectrum != nullptr && !m_spectrum->idle();
   syncSpectrum();
-  if (!m_visualizer->advance(deltaMs, newValues, audioActive)) {
+  if (!m_visualizer->advance(deltaMs, audioActive)) {
     return;
   }
   if (!m_visualizer->converged() || audioActive) {
